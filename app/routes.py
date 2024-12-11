@@ -125,8 +125,8 @@ def update_tableA(id):
         flash('Error: Unable to connect to the database.', 'danger')
         return redirect(url_for('routes.continents'))
 
-@routes.route('/tableA/delete/<id>', methods=['POST'])
-def delete_continent(id):
+@routes.route('/tableA/delete/<id_kamar>', methods=['POST'])
+def delete_continent(id_kamar):
     # Get a connection to the database
     conn = create_connection()
     
@@ -135,7 +135,7 @@ def delete_continent(id):
         cursor = conn.cursor()
         try:
             # Delete the tableA from the database
-            cursor.execute('DELETE FROM TableA WHERE id = ?', (id))
+            cursor.execute('DELETE FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
             conn.commit()  # Commit the transaction
             
             # Redirect to the tableA list with a success message
