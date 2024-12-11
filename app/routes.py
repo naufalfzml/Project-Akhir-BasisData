@@ -58,7 +58,10 @@ def create_tableA():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
         # properti input digunakan disini
-        tableA_name = request.form['nameTableA']
+        kamarHotel_tipe = request.form['tipe_KamarHotel']
+        kamarHotel_harga = request.form['harga_KamarHotel']
+        kamarHotel_no = request.form['no_KamarHotel']
+
         
         # Get a connection to the database
         conn = create_connection()
@@ -68,7 +71,8 @@ def create_tableA():
             cursor = conn.cursor()
             try:
                 # Insert the new tableA into the database
-                cursor.execute('INSERT INTO TableA (Name) VALUES (?)', (tableA_name))
+                cursor.execute('INSERT INTO KamarHotel (tipe_kamar, harga_kamar, nomor_kamar) VALUES (?, ?, ?)', 
+                               (kamarHotel_tipe, kamarHotel_harga, kamarHotel_no))
                 conn.commit()  # Commit the transaction
                 
                 # Redirect to the tableA list with a success message
@@ -76,6 +80,7 @@ def create_tableA():
                 return redirect(url_for('routes.tableA'))
             except Exception as e:
                 flash(f'Error: {str(e)}', 'danger')  # Flash error message
+                print(f"Database error: {e}")  
             finally:
                 cursor.close()
                 conn.close()

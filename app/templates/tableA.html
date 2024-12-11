@@ -36,16 +36,18 @@
     
     <main>
       <div class="container mt-5">
-        <h1 class="text-center text-primary mb-4">List All Table A</h1>
-        <p class="text-center mb-5">Table A ...</p>
+        <h1 class="text-center text-primary mb-4">List All Table Kamar Hotel</h1>
+        <p class="text-center mb-5">Table Kamar Hotel</p>
     
         <a class="btn btn-primary btn-m mb-3" href="/tableA/create">CREATE</a>
         {% if table %}
           <table class="table table-striped table-hover table-bordered">
             <thead class="table-primary">
               <tr>
-                <th>Code</th>
-                <th>Name</th>
+                <th>Id Kamar</th>
+                <th>Tipe Kamar</th>
+                <th>Harga Kamar</th>
+                <th>Nomor Kamar</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -54,6 +56,8 @@
                 <tr>
                   <td>{{ KamarHotel.id_kamar }}</td>
                   <td>{{ KamarHotel.tipe_kamar }}</td>
+                  <td>{{ KamarHotel.harga_kamar }}</td>
+                  <td>{{ KamarHotel.nomor_kamar }}</td>
                   <td>
                     <!-- Update Button -->
                     <a href="/tableA/update/{{ KamarHotel.id_kamar }}" class="btn btn-warning btn-sm">Update</a>
