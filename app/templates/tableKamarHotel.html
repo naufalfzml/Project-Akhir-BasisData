@@ -39,7 +39,7 @@
         <h1 class="text-center text-primary mb-4">List All Table Kamar Hotel</h1>
         <p class="text-center mb-5">Table Kamar Hotel</p>
     
-        <a class="btn btn-primary btn-m mb-3" href="/tableA/create">CREATE</a>
+        <a class="btn btn-primary btn-m mb-3" href="/tableKamarHotel/create">CREATE</a>
         {% if table %}
           <table class="table table-striped table-hover table-bordered">
             <thead class="table-primary">
@@ -48,6 +48,7 @@
                 <th>Tipe Kamar</th>
                 <th>Harga Kamar</th>
                 <th>Nomor Kamar</th>
+                <th>Status Kamar</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -58,11 +59,12 @@
                   <td>{{ KamarHotel.tipe_kamar }}</td>
                   <td>{{ KamarHotel.harga_kamar }}</td>
                   <td>{{ KamarHotel.nomor_kamar }}</td>
+                  <td>{{ KamarHotel.status_kamar }}</td>
                   <td>
                     <!-- Update Button -->
-                    <a href="/tableA/update/{{ KamarHotel.id_kamar }}" class="btn btn-warning btn-sm">Update</a>
+                    <a href="/tableKamarHotel/update/{{ KamarHotel.id_kamar }}" class="btn btn-warning btn-sm">Update</a>
                     <!-- Delete Button -->
-                    <form action="/tableA/delete/{{ KamarHotel.id_kamar }}" method="POST" class="d-inline">
+                    <form action="/tableKamarHotel/delete/{{ KamarHotel.id_kamar }}" method="POST" class="d-inline">
                       <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this continent?');">Delete</button>
                     </form>
                   </td>

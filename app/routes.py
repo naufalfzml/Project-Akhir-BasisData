@@ -8,7 +8,7 @@ routes = Blueprint('routes', __name__)
 def index():
     return render_template('home.html')
 
-@routes.route('/tableA')
+@routes.route('/tableKamarHotel')
 def tableA():
     # Get the current page number from the query string (default to page 1)
     page = request.args.get('page', 1, type=int)
@@ -49,11 +49,11 @@ def tableA():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableA.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('tableKamarHotel.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableA.html', table=None)
+        return render_template('tableKamarHotel.html', table=None)
 
-@routes.route('/tableA/create', methods=['GET', 'POST'])
+@routes.route('/tableKamarHotel/create', methods=['GET', 'POST'])
 def create_tableA():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
@@ -90,7 +90,7 @@ def create_tableA():
     # Render the form for GET request
     return render_template('createTableA.html')
 
-@routes.route('/tableA/update/<id>', methods=['GET', 'POST'])
+@routes.route('/tableKamarHotel/update/<id>', methods=['GET', 'POST'])
 def update_tableA(id):
     conn = create_connection()
     if conn:
@@ -125,7 +125,7 @@ def update_tableA(id):
         flash('Error: Unable to connect to the database.', 'danger')
         return redirect(url_for('routes.continents'))
 
-@routes.route('/tableA/delete/<id_kamar>', methods=['POST'])
+@routes.route('/tableKamarHotel/delete/<id_kamar>', methods=['POST'])
 def delete_continent(id_kamar):
     # Get a connection to the database
     conn = create_connection()
@@ -139,7 +139,7 @@ def delete_continent(id_kamar):
             conn.commit()  # Commit the transaction
             
             # Redirect to the tableA list with a success message
-            flash('Table A deleted successfully!', 'success')
+            flash('Table KamarHotel deleted successfully!', 'success')
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
         finally:
