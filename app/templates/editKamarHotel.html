@@ -23,7 +23,7 @@
                 <a class="nav-link" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/tableA">table</a>
+                <a class="nav-link" href="/KamarHotel">table</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/continent">Continent</a>
@@ -55,21 +55,24 @@
     
             <form method="POST">
               <div class="mb-3">
-                <label for="name" class="form-label">Tipe Kamar</label>
+                <label for="tipe_kamar" class="form-label">Tipe Kamar</label>
                 <input type="text" class="form-control" id="tipe_kamar" name="tipe_KamarHotel" value="{{ KamarHotel.tipe_kamar }}" required>
-                <label for="name" class="form-label">Harga Kamar</label>
+                <label for="harga_kamar" class="form-label">Harga Kamar</label>
                 <input type="text" class="form-control" id="harga_kamar" name="harga_KamarHotel" value="{{ KamarHotel.harga_kamar }}" required>
-                <label for="name" class="form-label">Nomor Kamar</label>
+                <label for="no_kamar" class="form-label">Nomor Kamar</label>
                 <input type="text" class="form-control" id="no_kamar" name="no_KamarHotel" value="{{ KamarHotel.no_kamar }}" required>
-                <label for="name" class="form-label">Status Kamar</label>
-                <input type="text" class="form-control" id="status_kamar" name="status_KamarHotel" value="{{ KamarHotel.status_kamar }}" required>
+                <label for="status_kamar" class="form-label">Status Kamar</label>
+                <select class="form-control" id="status_kamar" name="status_KamarHotel" required>
+                  <option value="Booked" {% if KamarHotel.status_kamar == "Booked" %}selected{% endif %}>Booked</option>
+                  <option value="Not Booked" {% if KamarHotel.status_kamar == "Not Booked" %}selected{% endif %}>Not Booked</option>
+                </select>
               </div>
         
               <button type="submit" class="btn btn-primary">Update</button>
             </form>
     
             <br>
-            <a href="{{ url_for('routes.tableA') }}" class="btn btn-secondary">Back to Table KamarHotel List</a>
+            <a href="{{ url_for('routes.KamarHotel') }}" class="btn btn-secondary">Back to Table KamarHotel List</a>
         
     </main>
     

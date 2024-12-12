@@ -9,7 +9,7 @@ def index():
     return render_template('home.html')
 
 @routes.route('/tableKamarHotel')
-def tableA():
+def KamarHotel():
     # Get the current page number from the query string (default to page 1)
     page = request.args.get('page', 1, type=int)
     per_page = 10  # Number of items per page
@@ -32,7 +32,7 @@ def tableA():
             FETCH NEXT ? ROWS ONLY
         ''', (offset, per_page))
 
-        # cursor.execute('SELECT * FROM TableA')
+        # cursor.execute('SELECT * FROM KamarHotel')
         
         # Fetch the results
         table = cursor.fetchall()
@@ -76,8 +76,8 @@ def create_KamarHotel():
                 conn.commit()  # Commit the transaction
                 
                 # Redirect to the tableA list with a success message
-                flash('TableA added successfully!', 'success')
-                return redirect(url_for('routes.tableA'))
+                flash('KamarHotel added successfully!', 'success')
+                return redirect(url_for('routes.KamarHotel'))
             except Exception as e:
                 flash(f'Error: {str(e)}', 'danger')  # Flash error message
                 print(f"Database error: {e}")  
@@ -108,23 +108,23 @@ def update_KamarHotel(id_kamar):
                 cursor.execute('''UPDATE KamarHotel 
                                 SET tipe_kamar = ?,
                                     harga_kamar = ?,
-                                    no_kamar = ?,
+                                    nomor_kamar = ?,
                                     status_kamar = ?
                                 WHERE id_kamar = ?''', (new_tipeKamar, new_hargaKamar, new_noKamar, new_statusKamar, id_kamar))
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
-                return redirect(url_for('routes.tableA'))
+                return redirect(url_for('routes.KamarHotel'))
 
             # For GET request, fetch current data to pre-fill the form
             cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar, status_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
-                return redirect(url_for('routes.tableA'))
+                return redirect(url_for('routes.KamarHotel'))
 
             # Pass the current data to the form
-            return render_template('editTableA.html', KamarHotel={
+            return render_template('editKamarHotel.html', KamarHotel={
                 'tipe_kamar'    : table[0],
                 'harga_kamar'   : table[1],
                 'no_kamar'      : table[2],
@@ -162,4 +162,4 @@ def delete_continent(id_kamar):
     else:
         flash('Error: Unable to connect to the database.', 'danger')
     
-    return redirect(url_for('routes.tableA'))
+    return redirect(url_for('routes.KamarHotel'))
