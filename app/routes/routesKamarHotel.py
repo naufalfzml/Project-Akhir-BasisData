@@ -2,13 +2,13 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from connect import create_connection
 
 # Create a blueprint for modular routing
-routes = Blueprint('routes', __name__)
+routesKamarHotel = Blueprint('routesKamarHotel', __name__)
 
-@routes.route('/')
+@routesKamarHotel.route('/')
 def index():
     return render_template('home.html')
 
-@routes.route('/tableKamarHotel')
+@routesKamarHotel.route('/tableKamarHotel')
 def KamarHotel():
     # Get the current page number from the query string (default to page 1)
     page = request.args.get('page', 1, type=int)
@@ -53,7 +53,7 @@ def KamarHotel():
     else:
         return render_template('tableKamarHotel.html', table=None)
 
-@routes.route('/tableKamarHotel/create', methods=['GET', 'POST'])
+@routesKamarHotel.route('/tableKamarHotel/create', methods=['GET', 'POST'])
 def create_KamarHotel():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
@@ -77,7 +77,7 @@ def create_KamarHotel():
                 
                 # Redirect to the tableA list with a success message
                 flash('KamarHotel added successfully!', 'success')
-                return redirect(url_for('routes.KamarHotel'))
+                return redirect(url_for('routesKamarHotel.KamarHotel'))
             except Exception as e:
                 flash(f'Error: {str(e)}', 'danger')  # Flash error message
                 print(f"Database error: {e}")  
@@ -90,7 +90,7 @@ def create_KamarHotel():
     # Render the form for GET request
     return render_template('createKamarHotel.html')
 
-@routes.route('/tableKamarHotel/update/<id_kamar>', methods=['GET', 'POST'])
+@routesKamarHotel.route('/tableKamarHotel/update/<id_kamar>', methods=['GET', 'POST'])
 def update_KamarHotel(id_kamar):
     conn = create_connection()
     if conn:
@@ -114,14 +114,14 @@ def update_KamarHotel(id_kamar):
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
-                return redirect(url_for('routes.KamarHotel'))
+                return redirect(url_for('routesKamarHotel.KamarHotel'))
 
             # For GET request, fetch current data to pre-fill the form
             cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar, status_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
-                return redirect(url_for('routes.KamarHotel'))
+                return redirect(url_for('routesKamarHotel.KamarHotel'))
 
             # Pass the current data to the form
             return render_template('editKamarHotel.html', KamarHotel={
@@ -137,9 +137,9 @@ def update_KamarHotel(id_kamar):
             conn.close()
     else:
         flash('Error: Unable to connect to the database.', 'danger')
-        return redirect(url_for('routes.continents'))
+        return redirect(url_for('routesKamarHotel.continents'))
 
-@routes.route('/tableKamarHotel/delete/<id_kamar>', methods=['POST'])
+@routesKamarHotel.route('/tableKamarHotel/delete/<id_kamar>', methods=['POST'])
 def delete_continent(id_kamar):
     # Get a connection to the database
     conn = create_connection()
@@ -162,4 +162,4 @@ def delete_continent(id_kamar):
     else:
         flash('Error: Unable to connect to the database.', 'danger')
     
-    return redirect(url_for('routes.KamarHotel'))
+    return redirect(url_for('routesKamarHotel.KamarHotel'))
