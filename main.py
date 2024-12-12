@@ -1,5 +1,6 @@
 from flask import Flask
 from app.routes.routesKamarHotel import routesKamarHotel
+from app.routes.routesTamuHotel import routesTamuHotel
 from dotenv import load_dotenv
 import os
 
@@ -15,6 +16,7 @@ def create_app():
 
     # Register the routes blueprint
     app.register_blueprint(routesKamarHotel)
+    app.register_blueprint(routesTamuHotel)
 
     return app
 
