@@ -54,7 +54,7 @@ def tableA():
         return render_template('tableKamarHotel.html', table=None)
 
 @routes.route('/tableKamarHotel/create', methods=['GET', 'POST'])
-def create_tableA():
+def create_KamarHotel():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
         # properti input digunakan disini
@@ -88,34 +88,48 @@ def create_tableA():
         flash('Failed to connect to the database', 'danger')  # Error if connection failed
 
     # Render the form for GET request
-    return render_template('createTableA.html')
+    return render_template('createKamarHotel.html')
 
-@routes.route('/tableKamarHotel/update/<id>', methods=['GET', 'POST'])
-def update_tableA(id):
+@routes.route('/tableKamarHotel/update/<id_kamar>', methods=['GET', 'POST'])
+def update_KamarHotel(id_kamar):
     conn = create_connection()
     if conn:
         cursor = conn.cursor()
         try:
             if request.method == 'POST':
                 # Get updated data from the form
-                new_name = request.form['nameTableA']
+                new_tipeKamar = request.form['tipe_KamarHotel']
+                new_hargaKamar = request.form['harga_KamarHotel']
+                new_noKamar = request.form['no_KamarHotel']
+                new_statusKamar = request.form['status_KamarHotel']
+
 
                 # Update the tableA in the database
-                cursor.execute('UPDATE tableA SET name = ? WHERE id = ?', (new_name, id))
+                cursor.execute('''UPDATE KamarHotel 
+                                SET tipe_kamar = ?,
+                                    harga_kamar = ?,
+                                    no_kamar = ?,
+                                    status_kamar = ?
+                                WHERE id_kamar = ?''', (new_tipeKamar, new_hargaKamar, new_noKamar, new_statusKamar, id_kamar))
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
                 return redirect(url_for('routes.tableA'))
 
             # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT name FROM tableA WHERE id = ?', (id))
+            cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar, status_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
                 return redirect(url_for('routes.tableA'))
 
             # Pass the current data to the form
-            return render_template('editTableA.html', table={'name': table[0]})
+            return render_template('editTableA.html', KamarHotel={
+                'tipe_kamar'    : table[0],
+                'harga_kamar'   : table[1],
+                'no_kamar'      : table[2],
+                'status_kamar'  : table[3]
+            })
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
         finally:
