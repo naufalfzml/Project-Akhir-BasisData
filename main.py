@@ -2,6 +2,7 @@ from flask import Flask
 from app.routes.routesKamarHotel import routesKamarHotel
 from app.routes.routesTamuHotel import routesTamuHotel
 from app.routes.routesTabelKaryawan import routesTabelKaryawan
+from app.routes.routesLayananTambahan import routesLayananTambahan
 from dotenv import load_dotenv
 import os
 
@@ -19,6 +20,7 @@ def create_app():
     app.register_blueprint(routesKamarHotel)
     app.register_blueprint(routesTamuHotel)
     app.register_blueprint(routesTabelKaryawan)
+    app.register_blueprint(routesLayananTambahan)
 
     return app
 
