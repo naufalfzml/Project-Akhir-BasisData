@@ -58,9 +58,9 @@ def create_LayananTambahan():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
         # properti input digunakan disini
-        kamarHotel_tipe = request.form['tipe_KamarHotel']
-        kamarHotel_harga = request.form['harga_KamarHotel']
-        kamarHotel_no = request.form['no_KamarHotel']
+        layanan_idKaryawan = request.form['id-karyawan_Layanan']
+        layanan_nama = request.form['nama_Layanan']
+        layanan_biaya = request.form['biaya_Layanan']
 
         
         # Get a connection to the database
@@ -71,13 +71,13 @@ def create_LayananTambahan():
             cursor = conn.cursor()
             try:
                 # Insert the new tableA into the database
-                cursor.execute('INSERT INTO KamarHotel (tipe_kamar, harga_kamar, nomor_kamar) VALUES (?, ?, ?)', 
-                               (kamarHotel_tipe, kamarHotel_harga, kamarHotel_no))
+                cursor.execute('INSERT INTO LayananTambahan (id_karyawan, nama_layanan, biaya_layanan) VALUES (?, ?, ?)', 
+                               (layanan_idKaryawan, layanan_nama, layanan_biaya))
                 conn.commit()  # Commit the transaction
                 
                 # Redirect to the tableA list with a success message
-                flash('KamarHotel added successfully!', 'success')
-                return redirect(url_for('routesKamarHotel.KamarHotel'))
+                flash('LayananTambahan added successfully!', 'success')
+                return redirect(url_for('routesLayananTambahan.LayananTambahan'))
             except Exception as e:
                 flash(f'Error: {str(e)}', 'danger')  # Flash error message
                 print(f"Database error: {e}")  
@@ -88,47 +88,44 @@ def create_LayananTambahan():
         flash('Failed to connect to the database', 'danger')  # Error if connection failed
 
     # Render the form for GET request
-    return render_template('createKamarHotel.html')
+    return render_template('createLayananTambahan.html')
 
-@routesLayananTambahan.route('/tableKamarHotel/update/<id_kamar>', methods=['GET', 'POST'])
-def update_KamarHotel(id_kamar):
+@routesLayananTambahan.route('/tableLayananTambahan/update/<id_service>', methods=['GET', 'POST'])
+def update_LayananTambahan(id_service):
     conn = create_connection()
     if conn:
         cursor = conn.cursor()
         try:
             if request.method == 'POST':
                 # Get updated data from the form
-                new_tipeKamar = request.form['tipe_KamarHotel']
-                new_hargaKamar = request.form['harga_KamarHotel']
-                new_noKamar = request.form['no_KamarHotel']
-                new_statusKamar = request.form['status_KamarHotel']
+                new_idKaryawan = request.form['id-karyawan_Layanan']
+                new_namaLayanan = request.form['nama_Layanan']
+                new_biayaLayanan = request.form['biaya_Layanan']
 
 
                 # Update the tableA in the database
                 cursor.execute('''UPDATE KamarHotel 
-                                SET tipe_kamar = ?,
-                                    harga_kamar = ?,
-                                    nomor_kamar = ?,
-                                    status_kamar = ?
-                                WHERE id_kamar = ?''', (new_tipeKamar, new_hargaKamar, new_noKamar, new_statusKamar, id_kamar))
+                                SET id_karyawan = ?,
+                                    nama_layanan = ?,
+                                    biaya_layanan = ?
+                                WHERE id_service = ?''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
                 return redirect(url_for('routesKamarHotel.KamarHotel'))
 
             # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar, status_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
+            cursor.execute('SELECT id_karyawan, nama_layanan, biaya_layanan FROM LayananTambahan WHERE id_service = ?', (id_service,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
-                return redirect(url_for('routesKamarHotel.KamarHotel'))
+                return redirect(url_for('routesLayananTambahan.LayananTambahan'))
 
             # Pass the current data to the form
-            return render_template('editKamarHotel.html', KamarHotel={
-                'tipe_kamar'    : table[0],
-                'harga_kamar'   : table[1],
-                'no_kamar'      : table[2],
-                'status_kamar'  : table[3]
+            return render_template('editLayananTambahan.html', LayananTambahan={
+                'id_karyawan'    : table[0],
+                'nama_layanan'   : table[1],
+                'biaya_layanan'      : table[2]
             })
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
@@ -137,9 +134,9 @@ def update_KamarHotel(id_kamar):
             conn.close()
     else:
         flash('Error: Unable to connect to the database.', 'danger')
-        return redirect(url_for('routesKamarHotel.continents'))
+        return redirect(url_for('routesLayananTambahan.continents'))
 
-@routesLayananTambahan.route('/tableLayananTambahan/delete/<id_sevice>', methods=['POST'])
+@routesLayananTambahan.route('/tableLayananTambahan/delete/<id_service>', methods=['POST'])
 def delete_continent(id_service):
     # Get a connection to the database
     conn = create_connection()
@@ -149,11 +146,11 @@ def delete_continent(id_service):
         cursor = conn.cursor()
         try:
             # Delete the tableA from the database
-            cursor.execute('DELETE FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
+            cursor.execute('DELETE FROM LayananTambahan WHERE id_service = ?', (id_service,))
             conn.commit()  # Commit the transaction
             
             # Redirect to the tableA list with a success message
-            flash('Table KamarHotel deleted successfully!', 'success')
+            flash('Table LayananTambahan deleted successfully!', 'success')
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
         finally:
@@ -162,4 +159,4 @@ def delete_continent(id_service):
     else:
         flash('Error: Unable to connect to the database.', 'danger')
     
-    return redirect(url_for('routesKamarHotel.KamarHotel'))
+    return redirect(url_for('routesLayananTambahan.LayananTambahan'))
