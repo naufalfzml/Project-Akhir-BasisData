@@ -58,14 +58,25 @@
                 <label for="id_service" class="form-label">Id Service</label>
                 <select class="form-select" id="id_service" name="id_serviceReservasi" required>
                     <option value="">-- Pilih Service --</option>
-                    {% for karyawan in karyawan_list %}
-                    <option value="{{ karyawan[0] }}">{{ karyawan[1] }} (ID: {{ karyawan[0] }})</option>
+                    {% for service in service_list %}
+                    <option value="{{ service[0] }}">{{ service[1] }} (ID: {{ service[0] }})</option>
                     {% endfor %}
                 </select>
+                
                 <label for="id_tamu" class="form-label">Id Tamu</label>
-                <input type="text" class="form-control" id="id_tamu" name="id_tamuReservasi" required>
+                <select class="form-select" id="id_tamu" name="id_tamuReservasi" required>
+                    <option value="">-- Pilih Tamu --</option>
+                    {% for tamu in tamu_list %}
+                    <option value="{{ tamu[0] }}">{{ tamu[1] }} (ID: {{ tamu[0] }})</option>
+                    {% endfor %}
+                </select>
                 <label for="id_kamar" class="form-label">Id Kamar</label>
-                <input type="text" class="form-control" id="id_kamar" name="id_kamarReservasi" required>
+                <select class="form-select" id="id_kamar" name="id_kamarReservasi" required>
+                    <option value="">-- Pilih Kamar --</option>
+                    {% for kamar in kamar_list %}
+                    <option value="{{ kamar[0] }}">{{ kamar[1] }} (ID: {{ kamar[0] }})</option>
+                    {% endfor %}
+                </select>
                 <label for="jml_layanan" class="form-label">Jumlah Layanan</label>
                 <input type="number" class="form-control" id="jml_layanan" name="jml_layananReservasi" value="0" required>
                 <label for="tgl_ci" class="form-label">Tanggal Check In</label>

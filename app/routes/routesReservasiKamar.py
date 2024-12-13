@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from connect import create_connection
-from datetime import date
+from datetime import datetime, date
 
 # Create a blueprint for modular routing
 routesReservasiKamar = Blueprint('routesReservasiKamar', __name__)
@@ -59,40 +59,69 @@ def create_ReservasiKamar():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
         # properti input digunakan disini
-        layanan_idKaryawan = request.form['id-karyawan_Layanan']
-        layanan_nama = request.form['nama_Layanan']
-        layanan_biaya = request.form['biaya_Layanan']
-       
-        # Get a connection to the database
-        conn = create_connection()
+        id_serviceReservasi = request.form['id_serviceReservasi']
+        id_tamuReservasi = request.form['id_tamuReservasi']
+        id_kamarReservasi = request.form['id_kamarReservasi']
+        jml_layananReservasi = int(request.form['jml_layananReservasi'])
+        tanggal_check_in = datetime.strptime(request.form['tgl_checkInReservasi'], '%Y-%m-%d').date()
+        tanggal_check_out = datetime.strptime(request.form['tgl_checkOutReservasi'], '%Y-%m-%d').date()
+        tanggal_pembayaran = datetime.strptime(request.form['tgl_bayarReservasi'], '%Y-%m-%d').date()
+        metode_pembayaranReservasi = request.form['metode_bayarReservasi']
         
-        # Check if the connection was successful
+        if tanggal_check_out < tanggal_check_in :
+            flash('Tanggal Check-Out tidak boleh lebih awal dari Tanggal Check-In. Silahkan input yang benar!', 'danger')
+            return redirect(request.url)
+        # Hitung total_harga jika diperlukan (misal dari jumlah_layanan dan biaya layanan)
+        total_harga = 0 # Sesuaikan perhitungan Anda
+
+        # Simpan data ke database
+        conn = create_connection()
         if conn:
             cursor = conn.cursor()
             try:
-                # Insert the new tableA into the database
                 cursor.execute('''INSERT INTO ReservasiKamar
-                               (id_reservasi, id_service, id_tamu, id_kamar, jumlah_layanan, tanggal_check_in, tanggal_check_out, tanggal_reservasi, tanggal_pembayaran, metode_pembayaran, total_harga) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                               ''', 
-                               (layanan_idKaryawan, layanan_nama, layanan_biaya))
-                conn.commit()  # Commit the transaction
-                
-                # Redirect to the tableA list with a success message
-                flash('ReservasiKamar added successfully!', 'success')
+                               (id_service, id_tamu, id_kamar, jumlah_layanan, tanggal_check_in, tanggal_check_out, tanggal_reservasi, tanggal_pembayaran, metode_pembayaran, total_harga) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+                               (id_serviceReservasi, id_tamuReservasi, id_kamarReservasi, jml_layananReservasi, tanggal_check_in, tanggal_check_out, date.today(), tanggal_pembayaran, metode_pembayaranReservasi, total_harga))
+                conn.commit()
+                flash('Reservasi Kamar added successfully!', 'success')
                 return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
             except Exception as e:
-                flash(f'Error: {str(e)}', 'danger')  # Flash error message
-                print(f"Database error: {e}")  
+                flash(f'Error: {str(e)}', 'danger')
             finally:
                 cursor.close()
                 conn.close()
-        
-        flash('Failed to connect to the database', 'danger')  # Error if connection failed
+        else:
+            flash('Failed to connect to the database', 'danger')
+
 
     today_date = date.today()
 
+    conn = create_connection()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT id_service, nama_layanan FROM LayananTambahan')
+        service_list = cursor.fetchall()
+
+        cursor.execute('SELECT id_tamu, nama_tamu FROM TamuHotel')
+        tamu_list = cursor.fetchall()
+
+        cursor.execute('SELECT id_kamar, tipe_kamar FROM KamarHotel')
+        kamar_list = cursor.fetchall()
+    
+        cursor.close()
+        conn.close()
+    else:
+        service_list = []
+        tamu_list = []
+        kamar_list = []
+        
     # Render the form for GET request
-    return render_template('createReservasiKamar.html', today_date=today_date)
+    return render_template('createReservasiKamar.html', 
+                           today_date=today_date, 
+                           service_list=service_list, 
+                           tamu_list=tamu_list, 
+                           kamar_list=kamar_list)
 
 @routesReservasiKamar.route('/tableLayananTambahan/update/<id_service>', methods=['GET', 'POST'])
 def update_LayananTambahan(id_service):
