@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from connect import create_connection
-from datetime import datetime, date
+from datetime import date
 
 # Create a blueprint for modular routing
 routesReservasiKamar = Blueprint('routesReservasiKamar', __name__)
@@ -62,10 +62,10 @@ def create_ReservasiKamar():
         id_serviceReservasi = request.form['id_serviceReservasi']
         id_tamuReservasi = request.form['id_tamuReservasi']
         id_kamarReservasi = request.form['id_kamarReservasi']
-        jml_layananReservasi = int(request.form['jml_layananReservasi'])
-        tanggal_check_in = datetime.strptime(request.form['tgl_checkInReservasi'], '%Y-%m-%d').date()
-        tanggal_check_out = datetime.strptime(request.form['tgl_checkOutReservasi'], '%Y-%m-%d').date()
-        tanggal_pembayaran = datetime.strptime(request.form['tgl_bayarReservasi'], '%Y-%m-%d').date()
+        jml_layananReservasi = request.form['jml_layananReservasi']
+        tanggal_check_in = request.form['tgl_checkInReservasi']
+        tanggal_check_out = request.form['tgl_checkOutReservasi']
+        tanggal_pembayaran = request.form['tgl_bayarReservasi']
         metode_pembayaranReservasi = request.form['metode_bayarReservasi']
         
         if tanggal_check_out < tanggal_check_in :
