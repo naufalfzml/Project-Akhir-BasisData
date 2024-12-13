@@ -104,7 +104,7 @@ def update_LayananTambahan(id_service):
 
 
                 # Update the tableA in the database
-                cursor.execute('''UPDATE KamarHotel 
+                cursor.execute('''UPDATE LayananTambahan 
                                 SET id_karyawan = ?,
                                     nama_layanan = ?,
                                     biaya_layanan = ?
@@ -112,10 +112,10 @@ def update_LayananTambahan(id_service):
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
-                return redirect(url_for('routesKamarHotel.KamarHotel'))
+                return redirect(url_for('routesLayananTambahan.LayananTambahan'))
 
             # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT id_karyawan, nama_layanan, biaya_layanan FROM LayananTambahan WHERE id_service = ?', (id_service,))
+            cursor.execute('SELECT l.id_karyawan, l.nama_layanan, l.biaya_layanan, k.jabatan FROM LayananTambahan l JOIN TabelKaryawan k ON l.id_karyawan = k.id_karyawan WHERE id_service = ?', (id_service,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
@@ -125,7 +125,8 @@ def update_LayananTambahan(id_service):
             return render_template('editLayananTambahan.html', LayananTambahan={
                 'id_karyawan'    : table[0],
                 'nama_layanan'   : table[1],
-                'biaya_layanan'      : table[2]
+                'biaya_layanan'  : table[2],
+                'jabatan'        : table[3]
             })
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
