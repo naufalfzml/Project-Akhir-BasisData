@@ -9,7 +9,7 @@ SELECT @@NAUFAL\SQLEXPRESS
     tipe_kamar VARCHAR(50) NOT NULL,
     harga_kamar DECIMAL(10, 2) NOT NULL,
     nomor_kamar VARCHAR(10) UNIQUE NOT NULL,
-    status_kamar VARCHAR(20) NOT NULL
+    status_kamar VARCHAR(20) NULL
 );
 
 CREATE TABLE TabelKaryawan (

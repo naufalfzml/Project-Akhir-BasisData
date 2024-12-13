@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from connect import create_connection
+from datetime import date
 
 # Create a blueprint for modular routing
 routesReservasiKamar = Blueprint('routesReservasiKamar', __name__)
@@ -8,8 +9,8 @@ routesReservasiKamar = Blueprint('routesReservasiKamar', __name__)
 def index():
     return render_template('home.html')
 
-@routesReservasiKamar.route('/tableLayananTambahan')
-def LayananTambahan():
+@routesReservasiKamar.route('/tableReservasiKamar')
+def ReservasiKamar():
     # Get the current page number from the query string (default to page 1)
     page = request.args.get('page', 1, type=int)
     per_page = 10  # Number of items per page
@@ -26,8 +27,8 @@ def LayananTambahan():
         
         # Execute a query with pagination using OFFSET and FETCH NEXT
         cursor.execute('''
-            SELECT * FROM LayananTambahan
-            ORDER BY id_service  
+            SELECT * FROM ReservasiKamar
+            ORDER BY id_reservasi  
             OFFSET ? ROWS
             FETCH NEXT ? ROWS ONLY
         ''', (offset, per_page))
@@ -38,7 +39,7 @@ def LayananTambahan():
         table = cursor.fetchall()
         
         # Get the total count of rows to calculate the number of pages
-        cursor.execute('SELECT COUNT(*) FROM LayananTambahan')
+        cursor.execute('SELECT COUNT(*) FROM ReservasiKamar')
         total_count = cursor.fetchone()[0]
         
         # Close the cursor and connection
@@ -49,20 +50,19 @@ def LayananTambahan():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableLayananTambahan.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('tableReservasiKamar.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableLayananTambahan.html', table=None)
+        return render_template('tableReservasiKamar.html', table=None)
 
-@routesReservasiKamar.route('/tableLayananTambahan/create', methods=['GET', 'POST'])
-def create_LayananTambahan():
+@routesReservasiKamar.route('/tableReservasiKamar/create', methods=['GET', 'POST'])
+def create_ReservasiKamar():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
         # properti input digunakan disini
         layanan_idKaryawan = request.form['id-karyawan_Layanan']
         layanan_nama = request.form['nama_Layanan']
         layanan_biaya = request.form['biaya_Layanan']
-
-        
+       
         # Get a connection to the database
         conn = create_connection()
         
@@ -71,13 +71,15 @@ def create_LayananTambahan():
             cursor = conn.cursor()
             try:
                 # Insert the new tableA into the database
-                cursor.execute('INSERT INTO LayananTambahan (id_karyawan, nama_layanan, biaya_layanan) VALUES (?, ?, ?)', 
+                cursor.execute('''INSERT INTO ReservasiKamar
+                               (id_reservasi, id_service, id_tamu, id_kamar, jumlah_layanan, tanggal_check_in, tanggal_check_out, tanggal_reservasi, tanggal_pembayaran, metode_pembayaran, total_harga) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               ''', 
                                (layanan_idKaryawan, layanan_nama, layanan_biaya))
                 conn.commit()  # Commit the transaction
                 
                 # Redirect to the tableA list with a success message
-                flash('LayananTambahan added successfully!', 'success')
-                return redirect(url_for('routesLayananTambahan.LayananTambahan'))
+                flash('ReservasiKamar added successfully!', 'success')
+                return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
             except Exception as e:
                 flash(f'Error: {str(e)}', 'danger')  # Flash error message
                 print(f"Database error: {e}")  
@@ -87,8 +89,10 @@ def create_LayananTambahan():
         
         flash('Failed to connect to the database', 'danger')  # Error if connection failed
 
+    today_date = date.today()
+
     # Render the form for GET request
-    return render_template('createLayananTambahan.html')
+    return render_template('createReservasiKamar.html', today_date=today_date)
 
 @routesReservasiKamar.route('/tableLayananTambahan/update/<id_service>', methods=['GET', 'POST'])
 def update_LayananTambahan(id_service):

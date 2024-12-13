@@ -125,7 +125,7 @@ def update_LayananTambahan(id_service):
                                ''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
                 conn.commit()
 
-                flash('Table A updated successfully!', 'success')
+                flash('Table LayananTambahan updated successfully!', 'success')
                 return redirect(url_for('routesLayananTambahan.LayananTambahan'))
 
             # For GET request, fetch current data to pre-fill the form
