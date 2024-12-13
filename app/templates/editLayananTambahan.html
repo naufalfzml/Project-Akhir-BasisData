@@ -56,13 +56,18 @@
             <form method="POST">
               <div class="mb-3">
                 <label for="id_karyawan" class="form-label">Id Karyawan</label>
-                <input type="text" class="form-control" id="id_karyawan" name="karyawan_Layanan" value="{{ LayananTambahan.id_karyawan }}" required>
+                <select class="form-select" id="id_karyawan" name="id-karyawan_Layanan" required>
+                    {% for karyawan in karyawan_list %}
+                        <option value="{{ karyawan[0] }}" 
+                            {% if karyawan[0] == LayananTambahan.id_karyawan %}selected{% endif %}>
+                            {{ karyawan[1] }} (ID: {{ karyawan[0] }})
+                        </option>
+                    {% endfor %}
+                </select>
                 <label for="nama_layanan" class="form-label">Nama Layanan</label>
                 <input type="text" class="form-control" id="nama_layanan" name="nama_Layanan" value="{{ LayananTambahan.nama_layanan }}" required>
                 <label for="biaya_layanan" class="form-label">Biaya Layanan</label>
                 <input type="text" class="form-control" id="biaya_layanan" name="biaya_Layanan" value="{{ LayananTambahan.biaya_layanan }}" required>
-                <label for="jabatan" class="form-label">Jabatan</label>
-                <input type="text" class="form-control" id="jabatan" name="jabatan" value="{{ LayananTambahan.jabatan }}" readonly>
               </div>
         
               <button type="submit" class="btn btn-primary">Update</button>

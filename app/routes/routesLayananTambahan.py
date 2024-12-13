@@ -55,40 +55,53 @@ def LayananTambahan():
 
 @routesLayananTambahan.route('/tableLayananTambahan/create', methods=['GET', 'POST'])
 def create_LayananTambahan():
-    # Handle the form submission when the method is POST
+    # Inisialisasi karyawan_list
+    karyawan_list = []
+
+    # Ambil data karyawan untuk dropdown
+    conn = create_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute('SELECT id_karyawan, jabatan FROM TabelKaryawan')
+            karyawan_list = cursor.fetchall()  # Ambil semua data dari tabel
+        except Exception as e:
+            flash(f'Error fetching karyawan list: {str(e)}', 'danger')
+        finally:
+            cursor.close()
+            conn.close()
+    else:
+        flash('Failed to connect to the database', 'danger')
+
+    # Handle POST request untuk menyimpan data
     if request.method == 'POST':
-        # properti input digunakan disini
         layanan_idKaryawan = request.form['id-karyawan_Layanan']
         layanan_nama = request.form['nama_Layanan']
         layanan_biaya = request.form['biaya_Layanan']
 
-        
-        # Get a connection to the database
         conn = create_connection()
-        
-        # Check if the connection was successful
         if conn:
             cursor = conn.cursor()
             try:
-                # Insert the new tableA into the database
-                cursor.execute('INSERT INTO LayananTambahan (id_karyawan, nama_layanan, biaya_layanan) VALUES (?, ?, ?)', 
-                               (layanan_idKaryawan, layanan_nama, layanan_biaya))
-                conn.commit()  # Commit the transaction
-                
-                # Redirect to the tableA list with a success message
+                # Insert data ke database
+                cursor.execute(
+                    'INSERT INTO LayananTambahan (id_karyawan, nama_layanan, biaya_layanan) VALUES (?, ?, ?)', 
+                    (layanan_idKaryawan, layanan_nama, layanan_biaya)
+                )
+                conn.commit()
                 flash('LayananTambahan added successfully!', 'success')
                 return redirect(url_for('routesLayananTambahan.LayananTambahan'))
             except Exception as e:
-                flash(f'Error: {str(e)}', 'danger')  # Flash error message
-                print(f"Database error: {e}")  
+                flash(f'Error: {str(e)}', 'danger')
             finally:
                 cursor.close()
                 conn.close()
-        
-        flash('Failed to connect to the database', 'danger')  # Error if connection failed
+        else:
+            flash('Failed to connect to the database', 'danger')
 
-    # Render the form for GET request
-    return render_template('createLayananTambahan.html')
+    # Render template dengan karyawan_list
+    return render_template('createLayananTambahan.html', karyawan_list=karyawan_list)
+
 
 @routesLayananTambahan.route('/tableLayananTambahan/update/<id_service>', methods=['GET', 'POST'])
 def update_LayananTambahan(id_service):
@@ -108,26 +121,38 @@ def update_LayananTambahan(id_service):
                                 SET id_karyawan = ?,
                                     nama_layanan = ?,
                                     biaya_layanan = ?
-                                WHERE id_service = ?''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
+                                WHERE id_service = ?
+                               ''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
                 return redirect(url_for('routesLayananTambahan.LayananTambahan'))
 
             # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT l.id_karyawan, l.nama_layanan, l.biaya_layanan, k.jabatan FROM LayananTambahan l JOIN TabelKaryawan k ON l.id_karyawan = k.id_karyawan WHERE id_service = ?', (id_service,))
+            cursor.execute('''
+                           SELECT id_karyawan, nama_layanan, biaya_layanan 
+                           FROM LayananTambahan
+                           WHERE id_service = ?
+                           ''', (id_service,))
             table = cursor.fetchone()
+
             if not table:
                 flash('Table not found!', 'danger')
                 return redirect(url_for('routesLayananTambahan.LayananTambahan'))
+            
+            # Query to fetch all employees for the dropdown
+            cursor.execute('SELECT id_karyawan, jabatan FROM TabelKaryawan')
+            karyawan_list = cursor.fetchall()
 
             # Pass the current data to the form
             return render_template('editLayananTambahan.html', LayananTambahan={
                 'id_karyawan'    : table[0],
                 'nama_layanan'   : table[1],
-                'biaya_layanan'  : table[2],
-                'jabatan'        : table[3]
-            })
+                'biaya_layanan'  : table[2]
+            },
+            karyawan_list=karyawan_list
+            )
+
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
         finally:
