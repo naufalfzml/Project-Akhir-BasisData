@@ -134,6 +134,18 @@ def create_ReservasiKamar():
                                (id_service, id_tamu, id_kamar, jumlah_layanan, tanggal_check_in, tanggal_check_out, tanggal_reservasi, tanggal_pembayaran, metode_pembayaran, total_harga) 
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
                                (id_serviceReservasi, id_tamuReservasi, id_kamarReservasi, jml_layananReservasi, tanggal_check_in, tanggal_check_out, today_date,  tanggal_pembayaran, metode_pembayaranReservasi, total_harga))
+                
+                 # Retrieve the last inserted id_reservasi
+                cursor.execute('SELECT SCOPE_IDENTITY()')
+                id_reservasi = cursor.fetchone()[0]
+
+                # Automatically insert into Reservasi_Layanan
+                for _ in range(jml_layananReservasi):
+                    cursor.execute('''INSERT INTO Reservasi_Layanan 
+                                   (id_reservasi, id_service) 
+                                   VALUES (?, ?)''', 
+                                   (id_reservasi, id_serviceReservasi))
+                
                 conn.commit()
                 flash('Reservasi Kamar added successfully!', 'success')
                 return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
@@ -230,6 +242,17 @@ def update_ReservasiKamar(id_reservasi):
                                     metode_pembayaran = ?,
                                     total_harga = ?
                                 WHERE id_reservasi = ?''', (new_idService, new_idTamu, new_idKamar, new_jmlLayanan, new_tglCI, new_tglCO, new_tglPembayaran, new_metodePembayaran, total_harga, id_reservasi))
+                
+                # Delete existing Reservasi_Layanan entries
+                cursor.execute('DELETE FROM Reservasi_Layanan WHERE id_reservasi = ?', (id_reservasi,))
+
+                 # Insert new Reservasi_Layanan entries
+                for _ in range(int(new_jmlLayanan)):
+                    cursor.execute('''INSERT INTO Reservasi_Layanan 
+                                   (id_reservasi, id_service) 
+                                   VALUES (?, ?)''', 
+                                   (id_reservasi, new_idService))
+
                 conn.commit()
 
                 flash('Table ReservasiKamar updated successfully!', 'success')
@@ -278,7 +301,10 @@ def delete_continent(id_reservasi):
     if conn:
         cursor = conn.cursor()
         try:
-            # Delete the tableA from the database
+            # First, delete related entries in Reservasi_Layanan
+            cursor.execute('DELETE FROM Reservasi_Layanan WHERE id_reservasi = ?', (id_reservasi,))
+        
+            # Delete the ReservasiKamar from the database
             cursor.execute('DELETE FROM ReservasiKamar WHERE id_reservasi = ?', (id_reservasi,))
             conn.commit()  # Commit the transaction
             
