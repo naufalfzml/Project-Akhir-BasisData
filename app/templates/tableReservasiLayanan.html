@@ -46,28 +46,23 @@
               <tr>
                 <th>Id Reservasi</th>
                 <th>Id Service</th>
+                <th>Jumlah Layanan</th>
                 <th>Nama Layanan</th>
                 <th>Id Tamu</th>
                 <th>Nama Tamu</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {% for row in table %}
-                <tr>
-                  <td>{{ row.id_reservasi }}</td>
-                  <td>{{ row.id_service }}</td>
-                  <td>{{ row.nama_layanan }}</td>
-                  <td>{{ row.id_tamu }}</td>
-                  <td>{{ row.nama_tamu }}</td>
-                  <td>
-                    <a href="/tableReservasiKamar/update/{{ row.id_reservasi }}" class="btn btn-warning btn-sm">Update</a>
-                    <form action="/tableReservasiKamar/delete/{{ row.id_reservasi }}" method="POST" class="d-inline">
-                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this reservation?');">Delete</button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
+              <tr>
+                <td>{{ row.id_reservasi }}</td>
+                <td>{{ row.id_service }}</td>
+                <td>{{ row.jumlah_layanan }}</td>
+                <td>{{ row.nama_layanan }}</td>
+                <td>{{ row.id_tamu }}</td>
+                <td>{{ row.nama_tamu }}</td>
+              </tr>
+            {% endfor %}
             </tbody>
           </table>
           <a href="/" class="btn btn-secondary">Back to Dashboard</a>

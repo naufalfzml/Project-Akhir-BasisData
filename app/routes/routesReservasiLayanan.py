@@ -26,6 +26,7 @@ def ReservasiLayanan():
             SELECT 
                 RL.id_reservasi AS id_reservasi, 
                 RK.id_service AS id_service, 
+                RK.jumlah_layanan AS jumlah_layanan,
                 LT.nama_layanan AS nama_layanan,
                 RK.id_tamu AS id_tamu, 
                 TH.nama_tamu AS nama_tamu

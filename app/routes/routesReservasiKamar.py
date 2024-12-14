@@ -58,7 +58,7 @@ def ReservasiKamar():
 def create_ReservasiKamar():
     # Handle the form submission when the method is POST
     if request.method == 'POST':
-        # properti input digunakan disini
+        # Properti input digunakan disini
         id_serviceReservasi = request.form['id_serviceReservasi']
         id_tamuReservasi = request.form['id_tamuReservasi']
         id_kamarReservasi = request.form['id_kamarReservasi']
@@ -71,22 +71,22 @@ def create_ReservasiKamar():
         today_date = date.today().isoformat()
         durasi_menginap = (datetime.strptime(tanggal_check_out, '%Y-%m-%d') - datetime.strptime(tanggal_check_in, '%Y-%m-%d')).days
         
-        #Ketika check-in dan check-out di hari yang sama, durasi menginap dihitung 1 hari
-        if durasi_menginap == 0 :
+        # Ketika check-in dan check-out di hari yang sama, durasi menginap dihitung 1 hari
+        if durasi_menginap == 0:
             durasi_menginap = 1
 
-        #Validasi tanggal check-in tidak boleh lebih awal dari tanggal reservasi
+        # Validasi tanggal check-in tidak boleh lebih awal dari tanggal reservasi
         if tanggal_check_in < today_date:
             flash('Tanggal Check-In tidak boleh lebih awal dari tanggal reservasi!', 'danger')
             return redirect(request.url)
         
-        #Validasi tanggal pembayaran tidak boleh lebih awal dari tanggal reservasi
+        # Validasi tanggal pembayaran tidak boleh lebih awal dari tanggal reservasi
         if tanggal_pembayaran < today_date:
             flash('Tanggal Pembayaran tidak boleh lebih awal dari tanggal reservasi!', 'danger')
             return redirect(request.url)
         
         # Validasi tanggal check-out tidak boleh lebih awal dari tanggal check-in
-        if tanggal_check_out < tanggal_check_in :
+        if tanggal_check_out < tanggal_check_in:
             flash('Tanggal Check-Out tidak boleh lebih awal dari Tanggal Check-In. Silahkan input yang benar!', 'danger')
             return redirect(request.url)
 
@@ -95,69 +95,70 @@ def create_ReservasiKamar():
         if conn:
             cursor = conn.cursor()
             try:
-                cursor.execute('''
-                    SELECT COUNT(*) FROM ReservasiKamar 
-                    WHERE id_kamar = ? AND 
-                        (
-                            (tanggal_check_in <= ? AND tanggal_check_out >= ?) OR 
-                            (tanggal_check_in <= ? AND tanggal_check_out >= ?) OR
-                            (tanggal_check_in >= ? AND tanggal_check_out <= ?)
-                        )
-                ''', (id_kamarReservasi, tanggal_check_in, tanggal_check_in, tanggal_check_out, tanggal_check_out, tanggal_check_in, tanggal_check_out))
+                # Menonaktifkan autocommit untuk transaksi manual
+                conn.autocommit = False
+
+                # Cek apakah kamar sudah dipesan pada tanggal yang sama
+                cursor.execute('''SELECT COUNT(*) FROM ReservasiKamar 
+                                  WHERE id_kamar = ? AND 
+                                  (
+                                      (tanggal_check_in <= ? AND tanggal_check_out >= ?) OR 
+                                      (tanggal_check_in <= ? AND tanggal_check_out >= ?) OR
+                                      (tanggal_check_in >= ? AND tanggal_check_out <= ?)
+                                  )''', 
+                               (id_kamarReservasi, tanggal_check_in, tanggal_check_in, tanggal_check_out, tanggal_check_out, tanggal_check_in, tanggal_check_out))
                 reservation_count = cursor.fetchone()[0]
 
                 if reservation_count > 0:
                     flash('Kamar ini sudah dipesan untuk tanggal check-in dan check-out yang sama. Silakan pilih kamar lain.', 'danger')
                     return redirect(request.url)
-                
-                #Menghitung biaya layanan tambahan berdasarkan id_service
+
+                # Menghitung biaya layanan tambahan berdasarkan id_service
                 cursor.execute('SELECT biaya_layanan FROM LayananTambahan WHERE id_service = ?', (id_serviceReservasi,))
                 harga_service = cursor.fetchone()
-
                 if not harga_service:
                     flash('Service ID tidak valid!', 'danger')
                     return redirect(request.url)
                 harga_service = harga_service[0]
 
-                #Menghitung harga kamar berdasarkan id_kamar
+                # Menghitung harga kamar berdasarkan id_kamar
                 cursor.execute('SELECT harga_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamarReservasi,))
                 harga_kamar = cursor.fetchone()
-
                 if not harga_kamar:
                     flash('Kamar ID tidak valid!', 'danger')
                     return redirect(request.url)
                 harga_kamar = harga_kamar[0]
 
-                #Menghitung total harga reservasi kamar
+                # Menghitung total harga reservasi kamar
                 total_harga = (harga_service * jml_layananReservasi) + (harga_kamar * durasi_menginap)
 
+                # Menyimpan data ke tabel ReservasiKamar
                 cursor.execute('''INSERT INTO ReservasiKamar
                                (id_service, id_tamu, id_kamar, jumlah_layanan, tanggal_check_in, tanggal_check_out, tanggal_reservasi, tanggal_pembayaran, metode_pembayaran, total_harga) 
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
                                (id_serviceReservasi, id_tamuReservasi, id_kamarReservasi, jml_layananReservasi, tanggal_check_in, tanggal_check_out, today_date,  tanggal_pembayaran, metode_pembayaranReservasi, total_harga))
                 
-                conn.commit()
+                # Mendapatkan ID reservasi terakhir yang di-insert
+                cursor.execute('SELECT MAX(id_reservasi) FROM ReservasiKamar')
+                last_id_reservasi = cursor.fetchone()[0]
 
-                 # Retrieve the last inserted id_reservasi
-                cursor.execute('SELECT SCOPE_IDENTITY()')
-                id_reservasi = cursor.fetchone()[0]
-
-                if id_reservasi is None:
-                    flash('Gagal mendapatkan ID reservasi', 'danger')
+                if not last_id_reservasi:
+                    flash('Gagal mendapatkan ID Reservasi', 'danger')
                     return redirect(request.url)
-                    
-                # Insert ke Reservasi_Layanan untuk setiap layanan   
-                for _ in range(jml_layananReservasi):
-                    cursor.execute('''INSERT INTO Reservasi_Layanan 
-                                    (id_reservasi, id_service) 
-                                    VALUES (?, ?)''', 
-                                    (id_reservasi, id_serviceReservasi))
 
-                
+                # Insert ke Reservasi_Layanan
+                cursor.execute('''INSERT INTO Reservasi_Layanan 
+                                (id_reservasi, id_service) 
+                                VALUES (?, ?)''', 
+                                (last_id_reservasi, id_serviceReservasi))
+
+                # Commit transaksi jika semua berhasil
                 conn.commit()
+
                 flash('Reservasi Kamar added successfully!', 'success')
                 return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
             except Exception as e:
+                # Rollback jika terjadi error
                 flash(f'Error: {str(e)}', 'danger')
             finally:
                 cursor.close()
@@ -228,7 +229,7 @@ def update_ReservasiKamar(id_reservasi):
                     durasi_menginap = 1  # Check-out dan check-in di hari yang sama dihitung 1 hari
 
                 # Ambil harga layanan
-                cursor.execute('SELECT harga_layanan FROM LayananTambahan WHERE id_service = ?', (new_idService,))
+                cursor.execute('SELECT biaya_layanan FROM LayananTambahan WHERE id_service = ?', (new_idService,))
                 harga_service = cursor.fetchone()[0]
 
                 # Ambil harga kamar
@@ -250,17 +251,15 @@ def update_ReservasiKamar(id_reservasi):
                                     metode_pembayaran = ?,
                                     total_harga = ?
                                 WHERE id_reservasi = ?''', (new_idService, new_idTamu, new_idKamar, new_jmlLayanan, new_tglCI, new_tglCO, new_tglPembayaran, new_metodePembayaran, total_harga, id_reservasi))
-                
+            
                 # Delete existing Reservasi_Layanan entries
                 cursor.execute('DELETE FROM Reservasi_Layanan WHERE id_reservasi = ?', (id_reservasi,))
 
-                 # Insert new Reservasi_Layanan entries
-                for _ in range(int(new_jmlLayanan)):
-                    cursor.execute('''INSERT INTO Reservasi_Layanan 
-                                   (id_reservasi, id_service) 
-                                   VALUES (?, ?)''', 
-                                   (id_reservasi, new_idService))
-
+                cursor.execute('''INSERT INTO Reservasi_Layanan 
+                                (id_reservasi, id_service) 
+                                VALUES (?, ?)''', 
+                                (id_reservasi, new_idService))
+                
                 conn.commit()
 
                 flash('Table ReservasiKamar updated successfully!', 'success')
