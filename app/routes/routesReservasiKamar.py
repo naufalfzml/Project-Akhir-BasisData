@@ -179,6 +179,13 @@ def update_ReservasiKamar(id_reservasi):
     if conn:
         cursor = conn.cursor()
         try:
+            # Ambil data reservasi awal
+            cursor.execute('SELECT * FROM ReservasiKamar WHERE id_reservasi = ?', (id_reservasi,))
+            reservasi = cursor.fetchone()
+            if not reservasi:
+                flash('Reservasi tidak ditemukan!', 'danger')
+                return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
+            
             if request.method == 'POST':
                 # Get updated data from the form
                 new_idService = request.form['id_serviceReservasi']
@@ -190,40 +197,76 @@ def update_ReservasiKamar(id_reservasi):
                 new_tglPembayaran = request.form['tgl_bayarReservasi']
                 new_metodePembayaran = request.form['metode_bayarReservasi']
 
+                # Validasi tanggal check-out >= check-in
+                if new_tglCO < new_tglCI:
+                    flash('Tanggal Check-Out tidak boleh lebih awal dari Check-In!', 'danger')
+                    return redirect(request.url)
+                
+                #Hitung durasi menginap
+                durasi_menginap = (datetime.strptime(new_tglCO, '%Y-%m-%d') - datetime.strptime(new_tglCI, '%Y-%m-%d')).days
+                if durasi_menginap == 0:
+                    durasi_menginap = 1  # Check-out dan check-in di hari yang sama dihitung 1 hari
 
+                # Ambil harga layanan
+                cursor.execute('SELECT harga_layanan FROM LayananTambahan WHERE id_service = ?', (new_idService,))
+                harga_service = cursor.fetchone()[0]
+
+                # Ambil harga kamar
+                cursor.execute('SELECT harga_kamar FROM KamarHotel WHERE id_kamar = ?', (new_idKamar,))
+                harga_kamar = cursor.fetchone()[0]
+
+                # Hitung total harga baru
+                total_harga = (harga_service * int(new_jmlLayanan)) + (harga_kamar * durasi_menginap)
 
                 # Update the tableA in the database
                 cursor.execute('''UPDATE ReservasiKamar 
-                                SET id_karyawan = ?,
-                                    nama_layanan = ?,
-                                    biaya_layanan = ?
-                                WHERE id_service = ?''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
+                                SET id_service = ?,
+                                    id_tamu = ?,
+                                    id_kamar = ?,
+                                    jumlah_layanan = ?,
+                                    tanggal_check_in = ?,
+                                    tanggal_check_out = ?,
+                                    tanggal_pembayaran = ?,
+                                    metode_pembayaran = ?,
+                                    total_harga = ?
+                                WHERE id_reservasi = ?''', (new_idService, new_idTamu, new_idKamar, new_jmlLayanan, new_tglCI, new_tglCO, new_tglPembayaran, new_metodePembayaran, total_harga, id_reservasi))
                 conn.commit()
 
                 flash('Table ReservasiKamar updated successfully!', 'success')
                 return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
+            
+            # GET: Tampilkan form dengan data saat ini
+            cursor.execute('SELECT id_service, nama_layanan FROM LayananTambahan')
+            service_list = cursor.fetchall()
+            cursor.execute('SELECT id_tamu, nama_tamu FROM TamuHotel')
+            tamu_list = cursor.fetchall()
+            cursor.execute('SELECT id_kamar, tipe_kamar FROM KamarHotel')
+            kamar_list = cursor.fetchall()
 
-            # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT id_karyawan, nama_layanan, biaya_layanan FROM LayananTambahan WHERE id_service = ?', (id_service,))
-            table = cursor.fetchone()
-            if not table:
-                flash('Table not found!', 'danger')
-                return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
-
-            # Pass the current data to the form
-            return render_template('editReservasiKamar.html', ReservasiKamar={
-                'id_karyawan'    : table[0],
-                'nama_layanan'   : table[1],
-                'biaya_layanan'  : table[2]
-            })
+            return render_template('editReservasiKamar.html',
+                                   ReservasiKamar={
+                                       'id_service': reservasi[1],
+                                       'id_tamu': reservasi[2],
+                                       'id_kamar': reservasi[3],
+                                       'jumlah_layanan': reservasi[4],
+                                       'tanggal_check_in': reservasi[5],
+                                       'tanggal_check_out': reservasi[6],
+                                       'tanggal_reservasi': reservasi[7],
+                                       'tanggal_pembayaran': reservasi[8],
+                                       'metode_pembayaran': reservasi[9]
+                                   },
+                                   service_list=service_list,
+                                   tamu_list=tamu_list,
+                                   kamar_list=kamar_list)
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
+            return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
         finally:
             cursor.close()
             conn.close()
     else:
         flash('Error: Unable to connect to the database.', 'danger')
-        return redirect(url_for('routesReservasiKamar.continents'))
+        return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
 
 
 @routesReservasiKamar.route('/tableReservasiKamar/delete/<id_reservasi>', methods=['POST'])

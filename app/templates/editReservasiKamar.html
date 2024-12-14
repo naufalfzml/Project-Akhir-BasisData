@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title> UPDATE ReservasiKamar</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+    
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">EXAMPLE</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/TabelKaryawan">table</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/continent">Continent</a>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </nav>
+    </header>
+    
+    <main>
+      <div class="container mt-5">
+        <div class="container mt-5">
+            <h1 class="text-center text-primary mb-4">Update ReservasiKamar</h1>
+        
+            <!-- Display messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="mb-4">
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                      <strong>{{ message }}</strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+    
+            <form method="POST">
+              <div class="mb-3">
+                <label for="id_service" class="form-label">Id Service</label>
+                <select class="form-select" id="id_service" name="id_serviceReservasi" required>
+                    {% for service in service_list %}
+                    <option value="{{ service[0] }}"
+                        {% if service[0] == ReservasiKamar.id_service %} selected {% endif %}>
+                        {{ service[1] }} (ID: {{ service[0] }})
+                    </option>
+                    {% endfor %}
+                </select>
+                
+                <label for="id_tamu" class="form-label">Id Tamu</label>
+                <select class="form-select" id="id_tamu" name="id_tamuReservasi" required>
+                    {% for tamu in tamu_list %}
+                    <option value="{{ tamu[0] }}"
+                        {% if tamu[0] == ReservasiKamar.id_tamu %} selected {% endif %}>
+                        {{ tamu[1] }} (ID: {{ tamu[0] }})
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="id_kamar" class="form-label">Id Kamar</label>
+                <select class="form-select" id="id_kamar" name="id_kamarReservasi" required>
+                    {% for kamar in kamar_list %}
+                    <option value="{{ kamar[0] }}"
+                        {%  if kamar[0] == ReservasiKamar.id_kamar %} selected {% endif %}>
+                        {{ kamar[1] }} (ID: {{ kamar[0] }})
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="jml_layanan" class="form-label">Jumlah Layanan</label>
+                <input type="number" class="form-control" id="jml_layanan" name="jml_layananReservasi" value="{{ ReservasiKamar.jumlah_layanan }}" required>
+                <label for="tgl_ci" class="form-label">Tanggal Check In</label>
+                <input type="date" class="form-control" id="tgl_ci" name="tgl_checkInReservasi" value="{{ ReservasiKamar.tanggal_check_in }}" required>
+                <label for="tgl_co" class="form-label">Tanggal Check Out</label>
+                <input type="date" class="form-control" id="tgl_co" name="tgl_checkOutReservasi" value="{{ ReservasiKamar.tanggal_check_out }}" required>
+                <label for="tgl_Reservasi" class="form-label">Tanggal Reservasi</label>
+                <input type="date" class="form-control" id="tgl_Reservasi" name="tgl_Reservasi" value ="{{ ReservasiKamar.tanggal_reservasi }}" readonly>
+                <label for="tgl_bayar" class="form-label">Tanggal Pembayaran</label>
+                <input type="date" class="form-control" id="tgl_bayar" name="tgl_bayarReservasi" value="{{ ReservasiKamar.tanggal_pembayaran }}" required>
+                <label for="metode_bayar" class="form-label">Metode Pembayaran</label>
+                <select class="form-select" name="metode_bayarReservasi" id="metode_bayar">
+                    <option value="cash">Cash</option>
+                    <option value="debit">Debit</option>
+                </select>
+        
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+    
+            <br>
+            <a href="{{ url_for('routesReservasiKamar.ReservasiKamar') }}" class="btn btn-secondary">Back to ReservasiKamar List</a>
+        
+    </main>
+    
+    <footer class="bg-primary text-light text-center p-3 mt-5 shadow-sm">
+      <p>&copy; 2024 Example</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
