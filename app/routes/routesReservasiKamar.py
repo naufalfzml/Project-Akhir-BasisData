@@ -181,20 +181,26 @@ def update_ReservasiKamar(id_reservasi):
         try:
             if request.method == 'POST':
                 # Get updated data from the form
-                new_idKaryawan = request.form['id-karyawan_Layanan']
-                new_namaLayanan = request.form['nama_Layanan']
-                new_biayaLayanan = request.form['biaya_Layanan']
+                new_idService = request.form['id_serviceReservasi']
+                new_idTamu = request.form['id_tamuReservasi']
+                new_idKamar = request.form['id_kamarReservasi']
+                new_jmlLayanan = request.form['jml_layananReservasi']
+                new_tglCI = request.form['tgl_checkInReservasi']
+                new_tglCO = request.form['tgl_checkOutReservasi']
+                new_tglPembayaran = request.form['tgl_bayarReservasi']
+                new_metodePembayaran = request.form['metode_bayarReservasi']
+
 
 
                 # Update the tableA in the database
-                cursor.execute('''UPDATE KamarHotel 
+                cursor.execute('''UPDATE ReservasiKamar 
                                 SET id_karyawan = ?,
                                     nama_layanan = ?,
                                     biaya_layanan = ?
                                 WHERE id_service = ?''', (new_idKaryawan, new_namaLayanan, new_biayaLayanan, id_service))
                 conn.commit()
 
-                flash('Table A updated successfully!', 'success')
+                flash('Table ReservasiKamar updated successfully!', 'success')
                 return redirect(url_for('routesReservasiKamar.ReservasiKamar'))
 
             # For GET request, fetch current data to pre-fill the form
@@ -208,7 +214,7 @@ def update_ReservasiKamar(id_reservasi):
             return render_template('editReservasiKamar.html', ReservasiKamar={
                 'id_karyawan'    : table[0],
                 'nama_layanan'   : table[1],
-                'biaya_layanan'      : table[2]
+                'biaya_layanan'  : table[2]
             })
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
