@@ -122,6 +122,7 @@ def create_ReservasiKamar():
                 #Menghitung harga kamar berdasarkan id_kamar
                 cursor.execute('SELECT harga_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamarReservasi,))
                 harga_kamar = cursor.fetchone()
+
                 if not harga_kamar:
                     flash('Kamar ID tidak valid!', 'danger')
                     return redirect(request.url)
@@ -135,16 +136,23 @@ def create_ReservasiKamar():
                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
                                (id_serviceReservasi, id_tamuReservasi, id_kamarReservasi, jml_layananReservasi, tanggal_check_in, tanggal_check_out, today_date,  tanggal_pembayaran, metode_pembayaranReservasi, total_harga))
                 
+                conn.commit()
+
                  # Retrieve the last inserted id_reservasi
                 cursor.execute('SELECT SCOPE_IDENTITY()')
                 id_reservasi = cursor.fetchone()[0]
 
-                # Automatically insert into Reservasi_Layanan
+                if id_reservasi is None:
+                    flash('Gagal mendapatkan ID reservasi', 'danger')
+                    return redirect(request.url)
+                    
+                # Insert ke Reservasi_Layanan untuk setiap layanan   
                 for _ in range(jml_layananReservasi):
                     cursor.execute('''INSERT INTO Reservasi_Layanan 
-                                   (id_reservasi, id_service) 
-                                   VALUES (?, ?)''', 
-                                   (id_reservasi, id_serviceReservasi))
+                                    (id_reservasi, id_service) 
+                                    VALUES (?, ?)''', 
+                                    (id_reservasi, id_serviceReservasi))
+
                 
                 conn.commit()
                 flash('Reservasi Kamar added successfully!', 'success')

@@ -23,7 +23,12 @@ def ReservasiLayanan():
         # Execute a query with pagination using OFFSET and FETCH NEXT
         # Join to get more meaningful information
         cursor.execute('''
-            SELECT RL.id_reservasi, RK.id_service, LT.nama_layanan, RK.id_tamu, TH.nama_tamu 
+            SELECT 
+                RL.id_reservasi AS id_reservasi, 
+                RK.id_service AS id_service, 
+                LT.nama_layanan AS nama_layanan,
+                RK.id_tamu AS id_tamu, 
+                TH.nama_tamu AS nama_tamu
             FROM Reservasi_Layanan RL
             JOIN ReservasiKamar RK ON RL.id_reservasi = RK.id_reservasi
             JOIN LayananTambahan LT ON RL.id_service = LT.id_service
