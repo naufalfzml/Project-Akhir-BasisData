@@ -49,9 +49,9 @@ def TamuHotel():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableTamuHotel.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('/TamuHotel/tableTamuHotel.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableTamuHotel.html', table=None)
+        return render_template('/TamuHotel/tableTamuHotel.html', table=None)
 
 @routesTamuHotel.route('/tableTamuHotel/create', methods=['GET', 'POST'])
 def create_TamuHotel():
@@ -90,7 +90,7 @@ def create_TamuHotel():
         flash('Failed to connect to the database', 'danger')  # Error if connection failed
 
     # Render the form for GET request
-    return render_template('createTamuHotel.html')
+    return render_template('/TamuHotel/createTamuHotel.html')
 
 @routesTamuHotel.route('/tableTamuHotel/update/<id_tamu>', methods=['GET', 'POST'])
 def update_TamuHotel(id_tamu):
@@ -128,7 +128,7 @@ def update_TamuHotel(id_tamu):
                 return redirect(url_for('routesTamuHotel.TamuHotel'))
 
             # Pass the current data to the form
-            return render_template('editTamuHotel.html', TamuHotel={
+            return render_template('/TamuHotel/editTamuHotel.html', TamuHotel={
                 'nama_tamu'     : table[0],
                 'jenis_kelamin' : table[1],
                 'alamat_tamu'   : table[2],

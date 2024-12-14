@@ -50,9 +50,9 @@ def ReservasiKamar():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableReservasiKamar.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('/ReservasiKamar/tableReservasiKamar.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableReservasiKamar.html', table=None)
+        return render_template('/ReservasiKamar/tableReservasiKamar.html', table=None)
 
 @routesReservasiKamar.route('/tableReservasiKamar/create', methods=['GET', 'POST'])
 def create_ReservasiKamar():
@@ -188,7 +188,7 @@ def create_ReservasiKamar():
         kamar_list = []
         
     # Render the form for GET request
-    return render_template('createReservasiKamar.html', 
+    return render_template('/ReservasiKamar/createReservasiKamar.html', 
                            today_date=today_date, 
                            service_list=service_list, 
                            tamu_list=tamu_list, 
@@ -273,7 +273,7 @@ def update_ReservasiKamar(id_reservasi):
             cursor.execute('SELECT id_kamar, tipe_kamar FROM KamarHotel')
             kamar_list = cursor.fetchall()
 
-            return render_template('editReservasiKamar.html',
+            return render_template('/ReservasiKamar/editReservasiKamar.html',
                                    ReservasiKamar={
                                        'id_service': reservasi[1],
                                        'id_tamu': reservasi[2],

@@ -4,7 +4,7 @@ USE Database_Hotel
 
 SELECT @@NAUFAL\SQLEXPRESS
 
--CREATE TABLE KamarHotel (
+CREATE TABLE KamarHotel (
     id_kamar INT NOT NULL PRIMARY KEY IDENTITY(10001, 1),
     tipe_kamar VARCHAR(50) NOT NULL,
     harga_kamar DECIMAL(10, 2) NOT NULL,

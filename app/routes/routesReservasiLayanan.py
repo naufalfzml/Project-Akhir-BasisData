@@ -54,9 +54,9 @@ def ReservasiLayanan():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableReservasiLayanan.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('/Reservasi_Layanan/tableReservasiLayanan.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableReservasiLayanan.html', table=None)
+        return render_template('/Reservasi_Layanan/tableReservasiLayanan.html', table=None)
 
 # Note: No separate create/update/delete routes for Reservasi_Layanan
 # As this will be handled automatically in ReservasiKamar routes

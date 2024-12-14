@@ -49,9 +49,9 @@ def LayananTambahan():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableLayananTambahan.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('/LayananTambahan/tableLayananTambahan.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableLayananTambahan.html', table=None)
+        return render_template('/LayananTambahan/tableLayananTambahan.html', table=None)
 
 @routesLayananTambahan.route('/tableLayananTambahan/create', methods=['GET', 'POST'])
 def create_LayananTambahan():
@@ -101,7 +101,7 @@ def create_LayananTambahan():
             flash('Failed to connect to the database', 'danger')
 
     # Render template dengan karyawan_list
-    return render_template('createLayananTambahan.html', karyawan_list=karyawan_list)
+    return render_template('/LayananTambahan/createLayananTambahan.html', karyawan_list=karyawan_list)
 
 
 @routesLayananTambahan.route('/tableLayananTambahan/update/<id_service>', methods=['GET', 'POST'])
@@ -146,7 +146,7 @@ def update_LayananTambahan(id_service):
             karyawan_list = cursor.fetchall()
 
             # Pass the current data to the form
-            return render_template('editLayananTambahan.html', LayananTambahan={
+            return render_template('/LayananTambahan/editLayananTambahan.html', LayananTambahan={
                 'id_karyawan'    : table[0],
                 'nama_layanan'   : table[1],
                 'biaya_layanan'  : table[2]

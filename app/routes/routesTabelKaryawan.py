@@ -49,9 +49,9 @@ def TabelKaryawan():
         total_pages = (total_count + per_page - 1) // per_page
         
         # Pass the results, total pages, and current page to the template
-        return render_template('tableKaryawan.html', table=table, total_pages=total_pages, current_page=page)
+        return render_template('/TabelKaryawan/tableKaryawan.html', table=table, total_pages=total_pages, current_page=page)
     else:
-        return render_template('tableKaryawan.html', table=None)
+        return render_template('/TabelKaryawan/tableKaryawan.html', table=None)
 
 @routesTabelKaryawan.route('/tableKaryawan/create', methods=['GET', 'POST'])
 def create_TabelKaryawan():
@@ -90,7 +90,7 @@ def create_TabelKaryawan():
         flash('Failed to connect to the database', 'danger')  # Error if connection failed
 
     # Render the form for GET request
-    return render_template('createTabelKaryawan.html')
+    return render_template('/TabelKaryawan/createTabelKaryawan.html')
 
 @routesTabelKaryawan.route('/tableKaryawan/update/<id_karyawan>', methods=['GET', 'POST'])
 def update_TabelKaryawan(id_karyawan):
@@ -127,7 +127,7 @@ def update_TabelKaryawan(id_karyawan):
                 return redirect(url_for('routesTabelKaryawan.TabelKaryawan'))
 
             # Pass the current data to the form
-            return render_template('editTabelKaryawan.html', TabelKaryawan={
+            return render_template('/TabelKaryawan/editTabelKaryawan.html', TabelKaryawan={
                 'nama_karyawan'     : table[0],
                 'jabatan'           : table[1],
                 'hp_karyawan'       : table[2],
