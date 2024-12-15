@@ -7,15 +7,12 @@ body, html {
   .card {
     transform: none;
     margin: 10px 0;
+    margin-bottom: 20px;
   }
 
   .btn {
     padding: 5px 10px;
     border-radius: 20px;
-  }
-
-  .card-img-top {
-    border-radius: 10px;
   }
 
   .text-center {
@@ -24,6 +21,14 @@ body, html {
 
   h1 {
     margin: 10px;
+  }
+
+  .info {
+    font-size: 14px;
+  }
+
+  .container-title h1 {
+    font-size: 32px;
   }
 }
 
@@ -55,6 +60,7 @@ body, html {
   margin-left: auto;
   margin-right: auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 20px;
 }
 
 .card:hover {
@@ -78,14 +84,7 @@ h1 {
 }
 
 .container {
-<<<<<<< Updated upstream
-  width: 100vw;
-  max-width: 100%;
-  background-color: #DBAFA0;
-  border-radius: 15px;
-=======
   border-radius: 10px;
->>>>>>> Stashed changes
   margin-top: 1px;
 }
 
@@ -121,24 +120,7 @@ h1 {
 }
 
 .card-img-top {
+  border-radius: 20px;
   width: 100%;
   height: auto;
-}
-
-@media (max-width: 768px) {
-  .text-center {
-    font-size: 28px;
-  }
-
-  .info {
-    font-size: 14px;
-  }
-
-  .container-title h1 {
-    font-size: 32px;
-  }
-
-  .card {
-    margin-bottom: 20px;
-  }
 }
