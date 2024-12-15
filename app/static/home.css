@@ -1,5 +1,37 @@
 body, html {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: #DBAFA0;
+}
+
+@media (max-width: 576px) {
+  .card {
+    transform: none;
+    margin: 10px 0;
+  }
+
+  .btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  .card-img-top {
+    border-radius: 10px;
+  }
+
+  .text-center {
+    font-size: 28px;
+  }
+
+  h1 {
+    margin: 10px;
+  }
+}
+
+@media (hover: none) {
+  .card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .bg-lilac {
@@ -7,7 +39,6 @@ body, html {
 }
 
 .text-center {
-  font-size: 48px;
   margin-bottom: 5px;
 }
 
@@ -19,14 +50,11 @@ body, html {
 }
 
 .card {
-  max-width: 500px;
   margin-top: 20px;
   margin-bottom: 30px;
-  margin-left: 35px;
+  margin-left: auto;
+  margin-right: auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /*opacity: 0;
-  transform: translateY(50px); 
-  animation: slideUp 3s ease-out forwards; */
 }
 
 .card:hover {
@@ -36,7 +64,6 @@ body, html {
 
 .card-title {
   text-align: center;
-  text-decoration: #DBAFA0;
 }
 
 .card-text {
@@ -45,17 +72,20 @@ body, html {
 
 h1 {
   max-width: 100%;
-  margin: 28px;
   opacity: 0;
   transform: translateY(50px);
   animation: slideUp 1s ease-out forwards;
 }
 
 .container {
+<<<<<<< Updated upstream
   width: 100vw;
   max-width: 100%;
   background-color: #DBAFA0;
   border-radius: 15px;
+=======
+  border-radius: 10px;
+>>>>>>> Stashed changes
   margin-top: 1px;
 }
 
@@ -78,7 +108,6 @@ h1 {
   border-radius: 40px;
   border: 2px solid #fafafa;
   box-shadow: 0 0.4em 1em rgba(0,0,0,0.1);
-  border: #49243E;
 }
 
 .btn-lilac {
@@ -91,21 +120,25 @@ h1 {
   border: 2px solid #49243E;
 }
 
-.col {
-  border-radius: 100px;
-} 
-
 .card-img-top {
   width: 100%;
-  padding: 10px 50px 10px;
-  border-radius: 20%;
+  height: auto;
 }
 
-.card {
-  border-radius: 7%;
-}
+@media (max-width: 768px) {
+  .text-center {
+    font-size: 28px;
+  }
 
-.row {
-  margin-bottom: 10px;
-  padding-bottom: 50px;
+  .info {
+    font-size: 14px;
+  }
+
+  .container-title h1 {
+    font-size: 32px;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
 }
