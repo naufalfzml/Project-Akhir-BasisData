@@ -1,10 +1,12 @@
 body, html {
-  font-family: 'Poppins';
+  /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 .card {
   width: 100%;
   max-width: 400px;
-  margin-bottom: 50px;
+  margin-top: 20px;
+  margin-bottom: 30px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -14,7 +16,8 @@ body, html {
 }
 
 h1 {
-  padding-bottom: 50px;
+  max-width: 100%;
+  margin: 28px;
   opacity: 0;
   transform: translateY(50px);
   animation: slideUp 1s ease-out forwards;
@@ -25,6 +28,15 @@ h1 {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.container-title {
+  max-width: 100%;
+  margin: 20px 60px;
+  justify-content: center;
+  padding: 20px;
+  background: #90a5ea;
+  border-radius: 50%;
 }
 
 .btn {
