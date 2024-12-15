@@ -13,7 +13,7 @@ def create_app():
 
     # Create the Flask app
     from app.routes.routesLayananTambahan import routesLayananTambahan
-    app = Flask(__name__, template_folder='app/templates')
+    app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
 
     # Set the secret key using an environment variable
     app.config['SECRET_KEY'] = '1234'
