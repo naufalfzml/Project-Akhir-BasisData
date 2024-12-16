@@ -61,11 +61,6 @@
                 <input type="text" class="form-control" id="harga_kamar" name="harga_KamarHotel" value="{{ KamarHotel.harga_kamar }}" required>
                 <label for="no_kamar" class="form-label">Nomor Kamar</label>
                 <input type="text" class="form-control" id="no_kamar" name="no_KamarHotel" value="{{ KamarHotel.no_kamar }}" required>
-                <label for="status_kamar" class="form-label">Status Kamar</label>
-                <select class="form-control" id="status_kamar" name="status_KamarHotel" required>
-                  <option value="Booked" {% if KamarHotel.status_kamar == "Booked" %}selected{% endif %}>Booked</option>
-                  <option value="Not Booked" {% if KamarHotel.status_kamar == "Not Booked" %}selected{% endif %}>Not Booked</option>
-                </select>
               </div>
         
               <button type="submit" class="btn btn-primary">Update</button>

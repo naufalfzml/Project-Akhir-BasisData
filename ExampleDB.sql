@@ -35,7 +35,7 @@ CREATE TABLE LayananTambahan (
     id_karyawan INT NOT NULL,
     nama_layanan VARCHAR(50) NOT NULL,
     biaya_layanan DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_karyawan) REFERENCES TabelKaryawan(id_karyawan)
+    FOREIGN KEY (id_karyawan) REFERENCES TabelKaryawan(id_karyawan) ON DELETE CASCADE
 );
 
 CREATE TABLE ReservasiKamar (
@@ -50,9 +50,9 @@ CREATE TABLE ReservasiKamar (
     tanggal_pembayaran DATE NOT NULL,
     metode_pembayaran VARCHAR(50) NOT NULL,
     total_harga DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_service) REFERENCES LayananTambahan(id_service),
-    FOREIGN KEY (id_tamu) REFERENCES TamuHotel(id_tamu),
-    FOREIGN KEY (id_kamar) REFERENCES KamarHotel(id_kamar)
+    FOREIGN KEY (id_service) REFERENCES LayananTambahan(id_service) ON DELETE CASCADE,
+    FOREIGN KEY (id_tamu) REFERENCES TamuHotel(id_tamu) ON DELETE CASCADE,
+    FOREIGN KEY (id_kamar) REFERENCES KamarHotel(id_kamar) ON DELETE CASCADE
 );
 
 CREATE TABLE Reservasi_Layanan (

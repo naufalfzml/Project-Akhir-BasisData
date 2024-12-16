@@ -1,26 +1,28 @@
 USE Database_Hotel
 
 INSERT INTO KamarHotel (tipe_kamar, harga_kamar, nomor_kamar, status_kamar) VALUES
-('standard', 300000.00, 'A1', 'booked'),
-('deluxe', 750000.00, 'B1', 'booked'),
-('suite', 900000.00, 'C1', 'booked'),
-('standard', 300000.00, 'A2', 'booked'),
-('suite', 900000.00, 'C2', 'booked'),
-('deluxe', 750000.00, 'B2', 'booked'),
-('standard', 300000.00, 'A3', 'booked'),
-('suite', 900000.00, 'C3', 'booked'),
-('deluxe', 750000.00, 'B3', 'booked'),
-('suite', 900000.00, 'C4', 'booked'),
-('suite', 900000.00, 'C5', 'booked'),
-('deluxe', 750000.00, 'B4', 'booked'),
-('standard', 300000.00, 'A4', 'booked'),
-('standard', 300000.00, 'A5', 'booked'),
-('deluxe', 750000.00, 'B5', 'booked'),
-('meeting room', 1000000.00, 'D1', 'booked'),
-('deluxe', 750000.00, 'B6', 'booked'),
-('deluxe', 750000.00, 'B7', 'booked'),
-('deluxe', 750000.00, 'B8', 'booked'),
-('deluxe', 750000.00, 'B9', 'booked');
+('standard', 300000.00, 'A1', 'Not Booked'),
+('deluxe', 750000.00, 'B1', 'Not Booked'),
+('suite', 900000.00, 'C1', 'Not Booked'),
+('standard', 300000.00, 'A2', 'Not Booked'),
+('suite', 900000.00, 'C2', 'Not Booked'),
+('deluxe', 750000.00, 'B2', 'Not Booked'),
+('standard', 300000.00, 'A3', 'Not Booked'),
+('suite', 900000.00, 'C3', 'Not Booked'),
+('deluxe', 750000.00, 'B3', 'Not Booked'),
+('suite', 900000.00, 'C4', 'Not Booked'),
+('suite', 900000.00, 'C5', 'Not Booked'),
+('deluxe', 750000.00, 'B4', 'Not Booked'),
+('standard', 300000.00, 'A4', 'Not Booked'),
+('standard', 300000.00, 'A5', 'Not Booked'),
+('deluxe', 750000.00, 'B5', 'Not Booked'),
+('meeting room', 1000000.00, 'D1', 'Not Booked'),
+('deluxe', 750000.00, 'B6', 'Not Booked'),
+('deluxe', 750000.00, 'B7', 'Not Booked'),
+('deluxe', 750000.00, 'B8', 'Not Booked'),
+('deluxe', 750000.00, 'B9', 'Not Booked');
+
+
 
 
 INSERT INTO TabelKaryawan (nama_karyawan, jabatan, hp_karyawan, alamat_karyawan, gaji) VALUES
@@ -90,7 +92,6 @@ VALUES
 (NULL, 30317, 10018, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00),
 (NULL, 30317, 10019, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00),
 (NULL, 30317, 10020, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00);
-
 -- Insert data into PivotFG (Many-to-Many relationship)
 DECLARE @fgId INT = 1, @gfId INT = 1;
 WHILE @fgId <= 10
