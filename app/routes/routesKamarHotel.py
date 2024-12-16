@@ -101,23 +101,20 @@ def update_KamarHotel(id_kamar):
                 new_tipeKamar = request.form['tipe_KamarHotel']
                 new_hargaKamar = request.form['harga_KamarHotel']
                 new_noKamar = request.form['no_KamarHotel']
-                new_statusKamar = request.form['status_KamarHotel']
-
 
                 # Update the tableA in the database
                 cursor.execute('''UPDATE KamarHotel 
                                 SET tipe_kamar = ?,
                                     harga_kamar = ?,
-                                    nomor_kamar = ?,
-                                    status_kamar = ?
-                                WHERE id_kamar = ?''', (new_tipeKamar, new_hargaKamar, new_noKamar, new_statusKamar, id_kamar))
+                                    nomor_kamar = ?
+                                WHERE id_kamar = ?''', (new_tipeKamar, new_hargaKamar, new_noKamar, id_kamar))
                 conn.commit()
 
                 flash('Table A updated successfully!', 'success')
                 return redirect(url_for('routesKamarHotel.KamarHotel'))
 
             # For GET request, fetch current data to pre-fill the form
-            cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar, status_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
+            cursor.execute('SELECT tipe_kamar, harga_kamar, nomor_kamar FROM KamarHotel WHERE id_kamar = ?', (id_kamar,))
             table = cursor.fetchone()
             if not table:
                 flash('Table not found!', 'danger')
@@ -127,8 +124,7 @@ def update_KamarHotel(id_kamar):
             return render_template('/KamarHotel/editKamarHotel.html', KamarHotel={
                 'tipe_kamar'    : table[0],
                 'harga_kamar'   : table[1],
-                'no_kamar'      : table[2],
-                'status_kamar'  : table[3]
+                'no_kamar'      : table[2]
             })
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')

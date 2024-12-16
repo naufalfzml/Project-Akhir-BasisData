@@ -1,19 +1,26 @@
 USE Database_Hotel
-
-REATE TRIGGER tr_update_room_status
+CREATE TRIGGER tr_update_room_status
 ON ReservasiKamar
 AFTER INSERT
 AS
 BEGIN
     DECLARE @id_kamar INT;
+	DECLARE @tanggal_checkin DATE;
+    DECLARE @tanggal_sekarang DATE;
 
-    -- Mendapatkan id_kamar dari reservasi yang baru
-    SELECT @id_kamar = id_kamar FROM INSERTED;
+    -- Mendapatkan id_kamar dan tanggal c dari reservasi yang baru
+    SELECT @id_kamar = id_kamar, @tanggal_checkin = tanggal_check_in FROM INSERTED;
 
-    -- Mengupdate status kamar menjadi 'Tidak Tersedia'
-    UPDATE KamarHotel
-    SET status_kamar = 'Booked'
-    WHERE id_kamar = @id_kamar;
+    -- Mendapatkan tanggal sekarang
+    SET @tanggal_sekarang = GETDATE();
+
+    IF @tanggal_checkin = @tanggal_sekarang
+    BEGIN
+        -- Mengupdate status kamar menjadi 'Tidak Tersedia'
+        UPDATE KamarHotel
+        SET status_kamar = 'Booked'
+        WHERE id_kamar = @id_kamar;
+    END
 END;
 
 CREATE TRIGGER tr_update_status_kamar
