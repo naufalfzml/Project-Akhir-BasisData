@@ -1,0 +1,64 @@
+body, html {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #DBAFA0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+h1 {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease-out forwards;
+}
+
+.info {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease-out forwards;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bg-lilac {
+    background-color: #49243E;
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+}
+
+.btn-maroon {
+    background-color: #49243E;
+}
+
+.btn-maroon:hover {
+    background-color: white;
+    color: #49243E;
+    border: 2px solid #49243E;
+}
+
+.active>.page-link, .page-link.active {
+    background-color: antiquewhite;
+    border-color: antiquewhite;
+    color: black;
+}
+
+.page-link {
+    color: black;
+}
