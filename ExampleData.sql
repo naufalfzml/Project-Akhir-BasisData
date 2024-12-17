@@ -23,8 +23,6 @@ INSERT INTO KamarHotel (tipe_kamar, harga_kamar, nomor_kamar, status_kamar) VALU
 ('deluxe', 750000.00, 'B9', 'Not Booked');
 
 
-
-
 INSERT INTO TabelKaryawan (nama_karyawan, jabatan, hp_karyawan, alamat_karyawan, gaji) VALUES
 ('Jennifer Prima Sifabella', 'Resepsionis', '6285623148279', 'Jl. Dupak V', 4000000.00),
 ('Jovanka Orlin Pradipa', 'Chef', '6287829183023', 'Jl. Hayam Wuruk No. 17', 5200000.00),
@@ -92,6 +90,8 @@ VALUES
 (NULL, 30317, 10018, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00),
 (NULL, 30317, 10019, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00),
 (NULL, 30317, 10020, 0, '2024-06-05', '2024-06-06', '2024-05-30', '2024-06-06', 'cash', 750000.00);
+
+
 -- Insert data into PivotFG (Many-to-Many relationship)
 DECLARE @fgId INT = 1, @gfId INT = 1;
 WHILE @fgId <= 10

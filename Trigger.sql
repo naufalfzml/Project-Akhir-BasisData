@@ -14,7 +14,7 @@ BEGIN
     -- Mendapatkan tanggal sekarang
     SET @tanggal_sekarang = GETDATE();
 
-    IF @tanggal_checkin = @tanggal_sekarang
+    IF @tanggal_checkin >= @tanggal_sekarang
     BEGIN
         -- Mengupdate status kamar menjadi 'Tidak Tersedia'
         UPDATE KamarHotel
