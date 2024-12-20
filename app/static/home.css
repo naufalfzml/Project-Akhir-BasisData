@@ -110,7 +110,7 @@ h1 {
 }
 
 .btn-lilac {
-  background-color: #49243E;
+  background-color: var(--secondary-color);
 }
 
 .btn-lilac:hover {
