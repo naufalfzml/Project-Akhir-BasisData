@@ -40,7 +40,7 @@ body, html {
 }
 
 .bg-lilac {
-  background-color: #49243E;
+  background-color: var(--secondary-color);
 }
 
 .text-center {
@@ -115,8 +115,8 @@ h1 {
 
 .btn-lilac:hover {
   background-color: white;
-  color: #49243E;
-  border: 2px solid #49243E;
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
 }
 
 .card-img-top {
@@ -178,6 +178,17 @@ label:active:after {
   transition: 0.3s;
 }
 
-input:checked + label + .background {
+input:checked + label + .background + * {
   background: #242424;
+  color: white;
+}
+
+:root {
+  --primary-color: white;
+  --secondary-color: #49243E;
+}
+
+.dark-theme {
+  --primary-color: white;
+  --secondary-color: #49243E;
 }
