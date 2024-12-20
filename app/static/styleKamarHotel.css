@@ -34,7 +34,7 @@ h1 {
 }
 
 .bg-lilac {
-    background-color: #49243E;
+    background-color: var(--header-color);
 }
 
 .btn {
@@ -44,13 +44,13 @@ h1 {
 }
 
 .btn-maroon {
-    background-color: #49243E;
+    background-color: var(--header-color);
 }
 
 .btn-maroon:hover {
     background-color: white;
-    color: #49243E;
-    border: 2px solid #49243E;
+    color: var(--header-color);
+    border: 2px solid var(--header-color);
 }
 
 /* .btn-secondary {
@@ -58,11 +58,20 @@ h1 {
 } */
 
 .active>.page-link, .page-link.active {
-    background-color: antiquewhite;
-    border-color: antiquewhite;
+    background-color: var(--bg-color);
+    border-color: var(--header-color);
     color: black;
 }
 
 .page-link {
     color: black;
 }
+
+:root {
+    --bg-color: #f6f7f9;
+    --header-color: #52687f; 
+    --text-color: #000;
+    --card-color: #e3ecf1;
+    --title-card-color: #cfd3d5;
+    --text-card-color: #8e9598;
+  }
