@@ -1,6 +1,8 @@
 body, html {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   /* background-color: #DBAFA0; */
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 576px) {
@@ -40,7 +42,7 @@ body, html {
 }
 
 .bg-lilac {
-  background-color: var(--secondary-color);
+  background-color: var(--header-color);
 }
 
 .text-center {
@@ -70,10 +72,12 @@ body, html {
 
 .card-title {
   text-align: center;
+  color: var(--header-color);
 }
 
 .card-text {
   text-align: center;
+  color: var(--text-card-color);
 }
 
 h1 {
@@ -110,13 +114,13 @@ h1 {
 }
 
 .btn-lilac {
-  background-color: var(--secondary-color);
+  background-color: var(--header-color);
 }
 
 .btn-lilac:hover {
   background-color: white;
-  color: var(--secondary-color);
-  border: 2px solid var(--secondary-color);
+  color: var(--header-color);
+  border: 2px solid var(--header-color);
 }
 
 .card-img-top {
@@ -125,7 +129,7 @@ h1 {
   height: auto;
 }
 
-label {
+/* label {
   width: 70px;
   height: 50px;
   position: relative;
@@ -178,17 +182,23 @@ label:active:after {
   transition: 0.3s;
 }
 
-input:checked + label + .background + * {
+input:checked + label + .background {
   background: #242424;
   color: white;
-}
+} */
 
 :root {
-  --primary-color: white;
-  --secondary-color: #49243E;
+  --bg-color: #f6f7f9;
+  --header-color: #52687f; 
+  /* --title-bg-color: #e0e0e0; */
+  --text-color: #000;
+  --card-color: #e3ecf1;
+  --title-card-color: #cfd3d5;
+  --text-card-color: #8e9598;
 }
 
-.dark-theme {
-  --primary-color: white;
-  --secondary-color: #49243E;
-}
+/* [data-theme="dark"] {
+  --bg-color: #2c2c2c;
+  --title-bg-color: #3a3a3a;
+  --text-color: #fff;
+} */
