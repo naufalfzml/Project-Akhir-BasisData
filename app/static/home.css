@@ -1,6 +1,8 @@
 body, html {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  background-color: #DBAFA0;
+  /* background-color: #DBAFA0; */
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 576px) {
@@ -40,7 +42,7 @@ body, html {
 }
 
 .bg-lilac {
-  background-color: #49243E;
+  background-color: var(--header-color);
 }
 
 .text-center {
@@ -70,10 +72,12 @@ body, html {
 
 .card-title {
   text-align: center;
+  color: var(--header-color);
 }
 
 .card-text {
   text-align: center;
+  color: var(--text-card-color);
 }
 
 h1 {
@@ -110,13 +114,13 @@ h1 {
 }
 
 .btn-lilac {
-  background-color: #49243E;
+  background-color: var(--header-color);
 }
 
 .btn-lilac:hover {
   background-color: white;
-  color: #49243E;
-  border: 2px solid #49243E;
+  color: var(--header-color);
+  border: 2px solid var(--header-color);
 }
 
 .card-img-top {
@@ -124,3 +128,77 @@ h1 {
   width: 100%;
   height: auto;
 }
+
+/* label {
+  width: 70px;
+  height: 50px;
+  position: relative;
+  display: block;
+  background: #ebebeb;
+  border-radius: 200px;
+  box-shadow: inset 0px 5px 15px rgba(0,0,0,0.4), inset 0px -5px 15px rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+label:after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: linear-gradient(180deg, #ffcc89, #d8860b);
+  border-radius: 180px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+}
+
+input {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+input:checked + label {
+  background: #242424;
+}
+
+input:checked + label:after {
+  left: 60px;
+  transform: translateX(-100%);
+  background: linear-gradient(180deg,#777, #3a3a3a);
+}
+
+label:active:after {
+  width: 60px;
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  z-index: -1;
+  position: absolute;
+  transition: 0.3s;
+}
+
+input:checked + label + .background {
+  background: #242424;
+  color: white;
+} */
+
+:root {
+  --bg-color: #f6f7f9;
+  --header-color: #52687f; 
+  /* --title-bg-color: #e0e0e0; */
+  --text-color: #000;
+  --card-color: #e3ecf1;
+  --title-card-color: #cfd3d5;
+  --text-card-color: #8e9598;
+}
+
+/* [data-theme="dark"] {
+  --bg-color: #2c2c2c;
+  --title-bg-color: #3a3a3a;
+  --text-color: #fff;
+} */

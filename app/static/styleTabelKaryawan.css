@@ -1,0 +1,73 @@
+body, html {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* background-color: #DBAFA0; */
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+h1 {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease-out forwards;
+}
+
+.info {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 1s ease-out forwards;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bg-lilac {
+    background-color: var(--header-color);
+}
+
+.btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+}
+
+.btn-maroon {
+    background-color: var(--header-color);
+}
+
+.btn-maroon:hover {
+    background-color: white;
+    color: var(--header-color);
+    border: 2px solid var(--header-color);
+}
+
+.active>.page-link, .page-link.active {
+    background-color: var(--bg-color);
+    border-color: var(--header-color);
+    color: black;
+}
+
+.page-link {
+    color: black;
+}
+
+:root {
+    --bg-color: #f6f7f9;
+    --header-color: #52687f; 
+    --text-color: #000;
+    --card-color: #e3ecf1;
+    --title-card-color: #cfd3d5;
+    --text-card-color: #8e9598;
+  }

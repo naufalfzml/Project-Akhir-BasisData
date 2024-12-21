@@ -12,9 +12,9 @@
   <body>
     
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-lilac shadow-sm">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">EXAMPLE</a>
+          <a class="navbar-brand" href="/">Hotel DB</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -38,8 +38,9 @@
     <main>
       <div class="container mt-5">
         <div class="container mt-5">
-            <h1 class="text-center text-primary mb-4">Create TabelKaryawan</h1>
-        
+            <h1 class="text-center text-lilac mb-4">Create TabelKaryawan</h1>
+            <p class="info">&#9742; +6285753862179 | &#9993; hotelgue@gmail.com</p>
+
             <!-- Display messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -74,15 +75,15 @@
                 <input type="text" class="form-control" id="gaji_karyawan" name="gaji_KaryawanHotel" required>
               </div>
         
-              <button type="submit" class="btn btn-primary">Add</button>
+              <button type="submit" class="btn btn-maroon">Add</button>
             </form>
     
             <br>
-            <a href="{{ url_for('routesTabelKaryawan.TabelKaryawan') }}" class="btn btn-secondary">Back to TabelKaryawan List</a>
+            <a href="{{ url_for('routesTabelKaryawan.TabelKaryawan') }}" class="btn btn-maroon">Back to TabelKaryawan List</a>
         
     </main>
     
-    <footer class="bg-primary text-light text-center p-3 mt-5 shadow-sm">
+    <footer class="bg-lilac text-light text-center p-3 shadow-sm">
       <p>&copy; 2024 Example</p>
     </footer>
     
